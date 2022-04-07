@@ -28,9 +28,10 @@ listConnected() {
 }
 
 debug() {
+  shift
   echo "::: Generating Debug Output"
 
-  ${SUDO} "${scriptdir}/${vpn}/pivpnDEBUG.sh" | tee /tmp/debug.log
+  ${SUDO} "${scriptdir}/${vpn}/pivpnDEBUG.sh" "$@" | tee /tmp/debug.log
 
   echo "::: "
   echo "::: Debug output completed above."
@@ -40,7 +41,7 @@ debug() {
 }
 
 listClients() {
-  ${SUDO} "${scriptdir}/${vpn}/listCONF.sh"
+  ${SUDO} "${scriptdir}/${vpn}/listCONF.sh" "$@"
   exit "${?}"
 }
 
@@ -87,8 +88,13 @@ backup() {
 showHelp() {
   echo "::: Control all PiVPN specific functions!"
   echo ":::"
-  echo "::: Usage: pivpn <command> [option]"
+  echo "::: Usage: pivpn [config] <command> [option]"
   echo ":::"
+  echo
+  echo "::: Config:"
+  echo ":::    -co, --config        Use a custom setupVar config."
+  echo ":::    Uses /etc/pivpn/wireguard/setupVars.conf by default."
+  echo
   echo "::: Commands:"
   echo ":::    -a, add              Create a client conf profile"
   echo ":::    -c, clients          List any connected clients to the server"
@@ -121,31 +127,41 @@ if [[ "$#" == 0 ]]; then
   showHelp
 fi
 
+# Handle custom config
+case "$1" in
+"-co"|"--config")
+    CUSTOM_CONFIG="--config $2"
+    echo "Using Custom config $2"
+    shift 2
+;;
+esac
+
 # Handle redirecting to specific functions based on arguments
+# shellcheck disable=SC2086
 case "${1}" in
   "-a" | "add")
-    makeConf "$@"
+    makeConf "$@" ${CUSTOM_CONFIG}
     ;;
   "-c" | "clients")
-    listConnected "$@"
+    listConnected "$@" ${CUSTOM_CONFIG}
     ;;
   "-d" | "debug")
-    debug
+    debug "$@" ${CUSTOM_CONFIG}
     ;;
   "-l" | "list")
-    listClients
+    listClients "$@" ${CUSTOM_CONFIG}
     ;;
   "-qr" | "qrcode")
-    showQrcode "$@"
+    showQrcode "$@" ${CUSTOM_CONFIG}
     ;;
   "-r" | "remove")
-    removeClient "$@"
+    removeClient "$@" ${CUSTOM_CONFIG}
     ;;
   "-off" | "off")
-    disableClient "$@"
+    disableClient "$@" ${CUSTOM_CONFIG}
     ;;
   "-on" | "on")
-    enableClient "$@"
+    enableClient "$@" ${CUSTOM_CONFIG}
     ;;
   "-h" | "help")
     showHelp
@@ -154,7 +170,7 @@ case "${1}" in
     uninstallServer
     ;;
   "-up" | "update")
-    updateScripts "$@"
+    updateScripts "$@" ${CUSTOM_CONFIG}
     ;;
   "-bk" | "backup")
     backup

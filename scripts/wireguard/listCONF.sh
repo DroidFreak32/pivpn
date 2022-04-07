@@ -16,6 +16,24 @@ fi
 
 setupVars="/etc/pivpn/wireguard/setupVars.conf"
 
+# Parse input arguments
+while test $# -gt 0
+do
+    _key="$1"
+    case "$_key" in
+        -co|--config)
+            _val="${_key##--config=}"
+            if test "$_val" = "$_key"; then
+                test $# -lt 2 && echo "::: Missing value for the optional argument '$_key'." && exit 1
+                _val="$2"
+                shift
+            fi
+            setupVars="$_val"
+            ;;
+    esac
+    shift
+done
+
 if [ ! -f "${setupVars}" ]; then
     echo "::: Missing setup vars file!"
     exit 1

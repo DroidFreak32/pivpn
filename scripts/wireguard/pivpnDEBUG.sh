@@ -4,8 +4,23 @@
 
 setupVars="/etc/pivpn/wireguard/setupVars.conf"
 
-# shellcheck disable=SC1090
-source "${setupVars}"
+# Parse input arguments
+while test $# -gt 0
+do
+    _key="$1"
+    case "$_key" in
+        -co|--config)
+            _val="${_key##--config=}"
+            if test "$_val" = "$_key"; then
+                test $# -lt 2 && echo "::: Missing value for the optional argument '$_key'." && exit 1
+                _val="$2"
+                shift
+            fi
+            setupVars="$_val"
+            ;;
+    esac
+    shift
+done
 
 ### Funcions
 
@@ -20,6 +35,9 @@ if [[ ! -f "${setupVars}" ]]; then
   err "::: Missing setup vars file!"
   exit 1
 fi
+
+# shellcheck disable=SC1090
+source "${setupVars}"
 
 echo -e "::::\t\t\e[4mPiVPN debug\e[0m\t\t ::::"
 printf "=============================================\n"
