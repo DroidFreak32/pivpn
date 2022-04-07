@@ -15,7 +15,7 @@ fi
 source "${setupVars}"
 
 if [ "$VPN" = "wireguard" ]; then
-	VPN_SERVICE="wg-quick@wg0"
+	VPN_SERVICE="wg-quick@${pivpnDEV}"
 	VPN_PRETTY_NAME="WireGuard"
 elif [ "$VPN" = "openvpn" ]; then
 	VPN_SERVICE="openvpn"
