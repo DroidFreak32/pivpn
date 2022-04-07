@@ -180,7 +180,7 @@ echo "::: Client config generated"
   fi
 
   echo "### end ${CLIENT_NAME} ###"
-} >> wg0.conf
+} >> ${pivpnDEV}.conf
 
 echo "::: Updated server config"
 
@@ -207,7 +207,7 @@ if [[ "${PLAT}" == 'Alpine' ]]; then
     err "::: Failed to reload WireGuard"
   fi
 else
-  if systemctl reload wg-quick@wg0; then
+  if systemctl reload wg-quick@${pivpnDEV}; then
     echo "::: WireGuard reloaded"
   else
     err "::: Failed to reload WireGuard"

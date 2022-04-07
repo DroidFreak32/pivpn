@@ -26,7 +26,7 @@ source "${setupVars}"
 
 if [[ "${VPN}" == "wireguard" ]]; then
   VPN_PRETTY_NAME="WireGuard"
-  VPN_SERVICE="wg-quick@wg0"
+  VPN_SERVICE="wg-quick@${pivpnDEV}"
 
   if [[ "${PLAT}" == 'Alpine' ]]; then
     VPN_SERVICE='wg-quick'

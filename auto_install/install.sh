@@ -3034,8 +3034,8 @@ confWireGuard() {
     ${SUDO} tar -czf "/etc/${WIREGUARD_BACKUP}" /etc/wireguard &> /dev/null
     umask "${CURRENT_UMASK}"
 
-    if [[ -f /etc/wireguard/wg0.conf ]]; then
-      ${SUDO} rm /etc/wireguard/wg0.conf
+    if [[ -f /etc/wireguard/${pivpnDEV}.conf ]]; then
+      ${SUDO} rm /etc/wireguard/${pivpnDEV}.conf
     fi
   else
     # If compiled from source, the wireguard folder is not being created
@@ -3087,7 +3087,7 @@ confWireGuard() {
 
     echo "MTU = ${pivpnMTU}"
     echo "ListenPort = ${pivpnPORT}"
-  } | ${SUDO} tee /etc/wireguard/wg0.conf &> /dev/null
+  } | ${SUDO} tee /etc/wireguard/${pivpnDEV}.conf &> /dev/null
 
   echo "::: Server config generated."
 }
@@ -3450,8 +3450,8 @@ restartServices() {
         ${SUDO} systemctl enable openvpn.service &> /dev/null
         ${SUDO} systemctl restart openvpn.service
       elif [[ "${VPN}" == "wireguard" ]]; then
-        ${SUDO} systemctl enable wg-quick@wg0.service &> /dev/null
-        ${SUDO} systemctl restart wg-quick@wg0.service
+        ${SUDO} systemctl enable wg-quick@${pivpnDEV}.service &> /dev/null
+        ${SUDO} systemctl restart wg-quick@${pivpnDEV}.service
       fi
 
       ;;
