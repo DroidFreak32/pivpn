@@ -1,14 +1,5 @@
 #!/bin/bash
 
-setupVars="/etc/pivpn/wireguard/setupVars.conf"
-
-if [ ! -f "${setupVars}" ]; then
-    echo "::: Missing setup vars file!"
-    exit 1
-fi
-
-# shellcheck disable=SC1090
-source "${setupVars}"
 
 helpFunc(){
     echo "::: Enables client conf profiles"
@@ -28,6 +19,15 @@ while test $# -gt 0
 do
     _key="$1"
     case "$_key" in
+        -co|--config)
+            _val="${_key##--config=}"
+            if test "$_val" = "$_key"; then
+                test $# -lt 2 && echo "::: Missing value for the optional argument '$_key'." && exit 1
+                _val="$2"
+                shift
+            fi
+            setupVars="$_val"
+            ;;
         -h|--help)
             helpFunc
             exit 0
@@ -44,6 +44,16 @@ do
     esac
     shift
 done
+
+setupVars="/etc/pivpn/wireguard/setupVars.conf"
+
+if [ ! -f "${setupVars}" ]; then
+    echo "::: Missing setup vars file!"
+    exit 1
+fi
+
+# shellcheck disable=SC1090
+source "${setupVars}"
 
 cd /etc/wireguard || exit
 if [ ! -s configs/clients.txt ]; then
