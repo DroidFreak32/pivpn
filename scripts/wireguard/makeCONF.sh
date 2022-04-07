@@ -147,14 +147,14 @@ echo "### begin ${CLIENT_NAME} ###
 PublicKey = $(cat "keys/${CLIENT_NAME}_pub")
 PresharedKey = $(cat "keys/${CLIENT_NAME}_psk")
 AllowedIPs = ${NET_REDUCED}.${COUNT}/32,${pivpnNETv6}${COUNT}/128
-### end ${CLIENT_NAME} ###" >> wg0.conf
+### end ${CLIENT_NAME} ###" >> ${pivpnDEV}.conf
 else
 echo "### begin ${CLIENT_NAME} ###
 [Peer]
 PublicKey = $(cat "keys/${CLIENT_NAME}_pub")
 PresharedKey = $(cat "keys/${CLIENT_NAME}_psk")
 AllowedIPs = ${NET_REDUCED}.${COUNT}/32
-### end ${CLIENT_NAME} ###" >> wg0.conf
+### end ${CLIENT_NAME} ###" >> ${pivpnDEV}.conf
 fi
 
 echo "::: Updated server config"
@@ -171,7 +171,7 @@ if [ -f /etc/pivpn/hosts.wireguard ]; then
     fi
 fi
 
-if systemctl reload wg-quick@wg0; then
+if systemctl reload wg-quick@${pivpnDEV}; then
     echo "::: WireGuard reloaded"
 else
     echo "::: Failed to reload WireGuard"
