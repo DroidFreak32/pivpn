@@ -63,7 +63,8 @@ fi
 
 
 if [ "$DISPLAY_DISABLED" ]; then
-    grep '\[disabled\] ### begin' ${pivpnDEV}.conf | sed 's/#//g; s/begin//'
+    # shellcheck disable=SC2154
+    grep '\[disabled\] ### begin' "${pivpnDEV}".conf | sed 's/#//g; s/begin//'
     exit 1
 fi
 
@@ -97,7 +98,7 @@ for CLIENT_NAME in "${CLIENTS_TO_CHANGE[@]}"; do
 
     if ! grep -q "^${CLIENT_NAME} " configs/clients.txt; then
         echo -e "::: \e[1m${CLIENT_NAME}\e[0m does not exist"
-    elif grep -q "#\[disabled\] ### begin ${CLIENT_NAME}" ${pivpnDEV}.conf; then
+    elif grep -q "#\[disabled\] ### begin ${CLIENT_NAME}" "${pivpnDEV}".conf; then
         echo -e "::: \e[1m${CLIENT_NAME}\e[0m is already disabled"
     else
         if [ -n "$CONFIRM" ]; then
@@ -110,7 +111,7 @@ for CLIENT_NAME in "${CLIENTS_TO_CHANGE[@]}"; do
 
             # Disable the peer section from the server config
 	    echo "${CLIENT_NAME}"
-            sed -e "/### begin ${CLIENT_NAME}/,/end ${CLIENT_NAME}/ s/^/#\[disabled\] /" -i ${pivpnDEV}.conf
+            sed -e "/### begin ${CLIENT_NAME}/,/end ${CLIENT_NAME}/ s/^/#\[disabled\] /" -i "${pivpnDEV}".conf
             echo "::: Updated server config"
 
             ((CHANGED_COUNT++))
@@ -123,7 +124,7 @@ done
 
 # Restart WireGuard only if some clients were actually deleted
 if [ "${CHANGED_COUNT}" -gt 0 ]; then
-    if systemctl reload wg-quick@${pivpnDEV}; then
+    if systemctl reload wg-quick@"${pivpnDEV}"; then
         echo "::: WireGuard reloaded"
     else
         echo "::: Failed to reload WireGuard"
