@@ -62,4 +62,5 @@ printf "\e[1m::: Clients Summary :::\e[0m\n"
 cd /etc/wireguard || return
 
 echo "::: Disabled clients :::"
-grep '\[disabled\] ### begin' ${pivpnDEV}.conf | sed 's/#//g; s/begin//'
+# shellcheck disable=SC2154
+grep '\[disabled\] ### begin' "${pivpnDEV}".conf | sed 's/#//g; s/begin//'

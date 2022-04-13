@@ -61,8 +61,9 @@ removeAll() {
     fi
   else
     if [[ "${VPN}" == "wireguard" ]]; then
-      systemctl stop wg-quick@${pivpnDEV}
-      systemctl disable wg-quick@${pivpnDEV} &> /dev/null
+      # shellcheck disable=SC2154
+      systemctl stop wg-quick@"${pivpnDEV}"
+      systemctl disable wg-quick@"${pivpnDEV}" &> /dev/null
     elif [[ "${VPN}" == "openvpn" ]]; then
       systemctl stop openvpn
       systemctl disable openvpn &> /dev/null
@@ -257,7 +258,7 @@ removeAll() {
   echo "::: Removing VPN configuration files..."
 
   if [[ "${VPN}" == "wireguard" ]]; then
-    rm -f /etc/wireguard/${pivpnDEV}.conf
+    rm -f /etc/wireguard/"${pivpnDEV}".conf
     rm -rf /etc/wireguard/configs
     rm -rf /etc/wireguard/keys
     ### Ignoring SC2154, value sourced from setupVars file

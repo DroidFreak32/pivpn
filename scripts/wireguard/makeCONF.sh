@@ -175,6 +175,7 @@ NET_REDUCED="${pivpnNET::-2}"
 
 echo "::: Client config generated"
 
+# shellcheck disable=SC2154
 {
   echo "### begin ${CLIENT_NAME} ###"
   echo '[Peer]'
@@ -189,7 +190,7 @@ echo "::: Client config generated"
   fi
 
   echo "### end ${CLIENT_NAME} ###"
-} >> ${pivpnDEV}.conf
+} >> "${pivpnDEV}".conf
 
 echo "::: Updated server config"
 
@@ -216,7 +217,7 @@ if [[ "${PLAT}" == 'Alpine' ]]; then
     err "::: Failed to reload WireGuard"
   fi
 else
-  if systemctl reload wg-quick@${pivpnDEV}; then
+  if systemctl reload wg-quick@"${pivpnDEV}"; then
     echo "::: WireGuard reloaded"
   else
     err "::: Failed to reload WireGuard"

@@ -26,6 +26,7 @@ source "${setupVars}"
 
 if [[ "${VPN}" == "wireguard" ]]; then
   VPN_PRETTY_NAME="WireGuard"
+  # shellcheck disable=SC2154
   VPN_SERVICE="wg-quick@${pivpnDEV}"
 
   if [[ "${PLAT}" == 'Alpine' ]]; then
