@@ -122,6 +122,7 @@ case "$1" in
 esac
 
 # Handle redirecting to specific functions based on arguments
+# shellcheck disable=SC2086
 case "$1" in
 "-a"   | "add"                ) makeConf "$@" ${CUSTOM_CONFIG};;
 "-c"   | "clients"            ) listConnected "$@" ${CUSTOM_CONFIG};;

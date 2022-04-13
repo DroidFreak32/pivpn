@@ -38,18 +38,21 @@ git --git-dir /usr/local/src/pivpn/.git log -n 1 --format='Commit: %H%nAuthor: %
 printf "=============================================\n"
 echo -e "::::\t    \e[4mInstallation settings\e[0m    \t ::::"
 # Disabling SC2154 warning, variable is sourced externaly and may vary
-# shellcheck disable=SC2154
+# shellcheck disable=SC2086,SC2154
 sed "s/$pivpnHOST/REDACTED/" < ${setupVars}
 printf "=============================================\n"
 echo -e "::::  \e[4mServer configuration shown below\e[0m   ::::"
 cd /etc/wireguard/keys || exit
-cp ../${pivpnDEV}.conf ../${pivpnDEV}.tmp
+
+# shellcheck disable=SC2154
+cp ../"${pivpnDEV}".conf ../"${pivpnDEV}".tmp
+
 # Replace every key in the server configuration with just its file name
 for k in *; do
-    sed "s#$(<"$k")#$k#" -i ../${pivpnDEV}.tmp
+    sed "s#$(<"$k")#$k#" -i ../"${pivpnDEV}".tmp
 done
-cat ../${pivpnDEV}.tmp
-rm ../${pivpnDEV}.tmp
+cat ../"${pivpnDEV}".tmp
+rm ../"${pivpnDEV}".tmp
 printf "=============================================\n"
 echo -e "::::  \e[4mClient configuration shown below\e[0m   ::::"
 EXAMPLE="$(head -1 /etc/wireguard/configs/clients.txt | awk '{print $1}')"

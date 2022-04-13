@@ -150,20 +150,21 @@ if [ -n "${pivpnPERSISTENTKEEPALIVE}" ]; then
 fi
 echo "::: Client config generated"
 
+# shellcheck disable=SC2154
 if [ "$pivpnenableipv6" == "1" ]; then
 echo "### begin ${CLIENT_NAME} ###
 [Peer]
 PublicKey = $(cat "keys/${CLIENT_NAME}_pub")
 PresharedKey = $(cat "keys/${CLIENT_NAME}_psk")
 AllowedIPs = ${NET_REDUCED}.${COUNT}/32,${pivpnNETv6}${COUNT}/128
-### end ${CLIENT_NAME} ###" >> ${pivpnDEV}.conf
+### end ${CLIENT_NAME} ###" >> "${pivpnDEV}".conf
 else
 echo "### begin ${CLIENT_NAME} ###
 [Peer]
 PublicKey = $(cat "keys/${CLIENT_NAME}_pub")
 PresharedKey = $(cat "keys/${CLIENT_NAME}_psk")
 AllowedIPs = ${NET_REDUCED}.${COUNT}/32
-### end ${CLIENT_NAME} ###" >> ${pivpnDEV}.conf
+### end ${CLIENT_NAME} ###" >> "${pivpnDEV}".conf
 fi
 
 echo "::: Updated server config"
@@ -180,7 +181,7 @@ if [ -f /etc/pivpn/hosts.wireguard ]; then
     fi
 fi
 
-if systemctl reload wg-quick@${pivpnDEV}; then
+if systemctl reload wg-quick@"${pivpnDEV}"; then
     echo "::: WireGuard reloaded"
 else
     echo "::: Failed to reload WireGuard"
