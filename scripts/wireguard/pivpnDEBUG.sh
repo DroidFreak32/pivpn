@@ -3,11 +3,6 @@
 
 setupVars="/etc/pivpn/wireguard/setupVars.conf"
 
-if [ ! -f "${setupVars}" ]; then
-    echo "::: Missing setup vars file!"
-    exit 1
-fi
-
 # Parse input arguments
 while test $# -gt 0
 do
@@ -25,6 +20,11 @@ do
     esac
     shift
 done
+
+if [ ! -f "${setupVars}" ]; then
+    echo "::: Missing setup vars file!"
+    exit 1
+fi
 
 # shellcheck disable=SC1090
 source "${setupVars}"
