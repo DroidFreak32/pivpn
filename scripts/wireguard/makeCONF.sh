@@ -5,6 +5,8 @@
 pivpnPERSISTENTKEEPALIVE=""
 pivpnDNS2=""
 
+setupVars="/etc/pivpn/wireguard/setupVars.conf"
+
 helpFunc(){
     echo "::: Create a client conf profile"
     echo ":::"
@@ -50,8 +52,6 @@ while test $# -gt 0; do
     esac
     shift
 done
-
-setupVars="/etc/pivpn/wireguard/setupVars.conf"
 
 if [ ! -f "${setupVars}" ]; then
     echo "::: Missing setup vars file!"

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+setupVars="/etc/pivpn/wireguard/setupVars.conf"
+
 helpFunc(){
     echo "::: Disable client conf profiles"
     echo ":::"
@@ -44,8 +46,6 @@ do
     esac
     shift
 done
-
-setupVars="/etc/pivpn/wireguard/setupVars.conf"
 
 if [ ! -f "${setupVars}" ]; then
     echo "::: Missing setup vars file!"
