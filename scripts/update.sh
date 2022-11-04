@@ -13,7 +13,7 @@ exit 0
 ### END SECTION ###
 
 ### Constants
-pivpnrepo="https://github.com/pivpn/pivpn.git"
+pivpnrepo="https://github.com/DroidFreak32/pivpn.git"
 pivpnlocalpath="/etc/.pivpn"
 pivpnscripts="/opt/pivpn/"
 bashcompletiondir="/etc/bash_completion.d/"
